@@ -33,6 +33,9 @@
     <Filter Include="Source Files\RTCP Utilities">
       <UniqueIdentifier>{487ab71d-cfe7-4bc4-9d5a-4437c5315454}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\API Modules\EasyRelayModule">
+      <UniqueIdentifier>{e846c9c5-81e2-4226-a934-66e00c850135}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\PrefsSourceLib\FilePrefsSource.cpp">
@@ -281,6 +284,12 @@
     <ClCompile Include="..\RTCPUtilitiesLib\RTCPSRPacket.cpp">
       <Filter>Source Files\RTCP Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\APIModules\EasyRelayModule\EasyRelayModule.cpp">
+      <Filter>Source Files\API Modules\EasyRelayModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\APIModules\EasyRelayModule\EasyRelaySession.cpp">
+      <Filter>Source Files\API Modules\EasyRelayModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\HTTPUtilitiesLib\HTTPRequestStream.h">
@@ -304,5 +313,14 @@
     <ClInclude Include="..\Server.tproj\HTTPSessionInterface.h">
       <Filter>Source Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\APIModules\EasyRelayModule\EasyRelayModule.h">
+      <Filter>Source Files\API Modules\EasyRelayModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\APIModules\EasyRelayModule\EasyRelaySession.h">
+      <Filter>Source Files\API Modules\EasyRelayModule</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="memo.txt" />
   </ItemGroup>
 </Project>

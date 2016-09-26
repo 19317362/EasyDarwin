@@ -1,8 +1,39 @@
-雄迈/巨峰摄像机RTSP地址格式
+https://github.com/antirez/redis
+http://redis.io/download
+
+2016-09-22 16:30:23.563
+2016-08-14 10:17:07.273
+
+EasyCMS.exe -c ./easycms.xml -d
+cd ./
+set curPath="%cd%"
+echo service path：%curPath%
+sc create EasyCMS binPath= "%curPath%EasyCMS.exe -c %curPath%easycms.xml" start= auto
+net start EasyCMS
+pause
+
+EasyDarwin.exe -c ./easydarwin.xml -d
+cd ./
+set curPath="%cd%"
+echo service path：%curPath%
+sc create EasyDarwin binPath= "%curPath%EasyDarwin.exe -c %curPath%easydarwin.xml" start= auto
+net start EasyDarwin
+pause
+
+http://doc.easydarwin.org/EasyDarwin/README/#easydarwin
+http://blog.csdn.net/xiejiashu/article/details/29580543  例子+代码
+http://www.easydarwin.org/article/doc/EasyDarwin/86.html  EasyDarwin doc
+http://blog.csdn.net/xiejiashu/article/details/14103231  整体配置
+雄迈/巨峰摄像机RTSP地址格式  
+QQ:496258327
 rtsp://IP:554/user=admin&password=&channel=1&stream=0.sdp?real_stream
 channel=通道  stream=码流  0主码 1次码
 
 rtsp://192.168.1.17:554/user=admin&password=&channel=1&stream=0.sdp?real_stream
+
+rtsp://192.168.1.18:554/EasyRelayModule?name=live&url="rtsp://192.168.1.17:554/user=admin&password=&channel=1&stream=0.sdp?real_stream"
+
+rtsp://192.168.1.18:554/EasyRelayModule?name=live&cmd=stop
 
 http://blog.csdn.net/xiejiashu/article/details/38523437
 
