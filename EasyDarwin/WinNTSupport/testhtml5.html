@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1,target-densitydpi=medium-dpi, maximum-scale=1,minimum-scale=1, user-scalable=no, width=device-width">
+	<meta http-equiv="Content-Security-Policy" 
+		  content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' http://*.map.bdimg.com http://*.baidu.com 'unsafe-inline' 'unsafe-eval' ">
+	<title>test RTSP HTML5</title>
+
+
+</head>
+<body >
+
+</body>
+<video src="rtsp://192.168.1.18:554/EasyRelayModule?name=live">
+
+    Your browser does not support the VIDEO tag and/or RTP streams.
+</video>
+</html>
+
+https://github.com/kurento
+
+http://www.codeproject.com/Articles/800910/Broadcasting-of-a-Video-Stream-from-an-IP-camera-U
+http://flashphoner.com/web-call-server-5/
+http://quickblox.com/developers/Sample-webrtc-cordova
+
+ffmpeg.exe -i rtsp://admin:admin@192.168.66.119/ -vcodec copy -acodec copy -f rtsp rtsp://127.0.0.1/test.sdp
+
+ffmpeg.exe -i rtsp://192.168.1.17:554/user=admin&password=&channel=1&stream=0.sdp?real_stream -vcodec copy -acodec copy -f rtsp rtsp://192.168.1.18/test.sdp
+
+ASSERT: _Assert: e:\darwin\easydarwin\commonutilitieslib\osref.cpp, 41

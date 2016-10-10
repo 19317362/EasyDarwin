@@ -73,3 +73,17 @@ subtype: 码流类型，主码流为0（即subtype=0），辅码流为1（即subtype=1）。
 
 例如，请求某设备的通道2的辅码流，Url如下
 rtsp://admin:admin@10.12.4.84:554/cam/realmonitor?channel=2&subtype=1 
+
+https://github.com/kurento
+
+http://www.codeproject.com/Articles/800910/Broadcasting-of-a-Video-Stream-from-an-IP-camera-U
+http://flashphoner.com/web-call-server-5/
+http://quickblox.com/developers/Sample-webrtc-cordova
+
+ffmpeg.exe -i rtsp://admin:admin@192.168.66.119/ -vcodec copy -acodec copy -f rtsp rtsp://127.0.0.1/test.sdp
+
+ffmpeg.exe -i rtsp://192.168.1.17:554/user=admin&password=&channel=1&stream=0.sdp?real_stream -vcodec copy -acodec copy -f rtsp rtsp://192.168.1.18/test.sdp
+
+ASSERT: _Assert: e:\darwin\easydarwin\commonutilitieslib\osref.cpp, 41
+
+http://stackoverflow.com/questions/12257762/real-time-streaming-to-html5-with-out-webrtc-just-using-video-tag

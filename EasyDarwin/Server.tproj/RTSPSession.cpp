@@ -219,6 +219,7 @@ RTSPSession::~RTSPSession()
 	}
 }
 
+#define MC_CHANGE_STATE( NEWST )   WPS_TRACE("%s %d fState=%d => %d\r\n", __FUNCTION__, __LINE__, fState,(NEWST) );fState = (NEWST);
 /*
 *	函数名：Run()
 *	功能：状态机处理RTSP请求中的各种报文
@@ -277,13 +278,19 @@ SInt64 RTSPSession::Run()
 
 				// 此时收到完整报文
 				if (err == QTSS_RequestArrived)
-					fState = kHTTPFilteringRequest;
+				{
+					MC_CHANGE_STATE(kHTTPFilteringRequest);
+					//fState = kHTTPFilteringRequest;
+				}
 				// If we get an E2BIG, it means our buffer was overfilled.
 				// In that case, we can just jump into the following state, and
 				// the code their does a check for this error and returns an error.
 				if (err == E2BIG)
+				{
 					// 进入kHaveNonTunnelMessage状态机，再响应该E2BIG错误
-					fState = kHaveNonTunnelMessage;
+					//fState = kHaveNonTunnelMessage;
+					MC_CHANGE_STATE(kHaveNonTunnelMessage);
+				}
 			}
 			continue;
 
@@ -293,9 +300,9 @@ SInt64 RTSPSession::Run()
 				HTTP_TRACE("RTSPSession::Run kHTTPFilteringRequest\n")
 
 					// 初始化状态为非tunnel消息
-					fState = kHaveNonTunnelMessage; // assume it's not a tunnel setup message
+					//fState = kHaveNonTunnelMessage; // assume it's not a tunnel setup message
 													// prefilter will set correct tunnel state if it is.
-
+				MC_CHANGE_STATE(kHaveNonTunnelMessage);
 					// 检测是否为RTSP-over-HTTP tunneling
 				QTSS_Error  preFilterErr = this->PreFilterForHTTPProxyTunnel();
 
@@ -380,7 +387,8 @@ SInt64 RTSPSession::Run()
 						break;
 					}
 				}
-				fState = kHaveNonTunnelMessage;
+				//fState = kHaveNonTunnelMessage;
+				MC_CHANGE_STATE(kHaveNonTunnelMessage);
 				// fall thru to kHaveNonTunnelMessage
 			}
 
@@ -424,7 +432,8 @@ SInt64 RTSPSession::Run()
 				{
 					(void)QTSSModuleUtils::SendErrorResponse(fRequest, qtssClientBadRequest,
 						qtssMsgRequestTooLong);
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
 				// Check for a corrupt base64 error, return an error
@@ -433,14 +442,15 @@ SInt64 RTSPSession::Run()
 				{
 					(void)QTSSModuleUtils::SendErrorResponse(fRequest, qtssClientBadRequest,
 						qtssMsgBadBase64);
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
 
 				Assert(err == QTSS_RequestArrived);
 				// 状态机跳转到kFilteringRequest
-				fState = kFilteringRequest;
-
+				//fState = kFilteringRequest;
+				MC_CHANGE_STATE(kFilteringRequest);
 				// Note that there is no break here. We'd like to continue onto the next
 				// state at this point. This goes for every case in this case statement
 			}
@@ -463,7 +473,8 @@ SInt64 RTSPSession::Run()
 				if (fInputStream.IsDataPacket()) // can this interfere with MP3?
 				{
 					this->HandleIncomingDataPacket();
-					fState = kCleaningUp;
+					//fState = kCleaningUp;
+					MC_CHANGE_STATE(kCleaningUp);
 					break;
 				}
 
@@ -526,7 +537,8 @@ SInt64 RTSPSession::Run()
 				fCurrentModule = 0;
 				if (fRequest->HasResponseBeenSent())
 				{
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
 
@@ -534,22 +546,26 @@ SInt64 RTSPSession::Run()
 				{
 					fRoundTripTime = (SInt32)(OS::Milliseconds() - fOptionsRequestSendTime);
 					//qtss_printf("RTSPSession::Run RTT time = %" _S32BITARG_ " msec\n", fRoundTripTime);
-					fState = kSendingResponse;
+					//fState = kSendingResponse;
+					MC_CHANGE_STATE(kSendingResponse);
 					break;
 				}
 				else
+				{
 					// Otherwise, this is a normal request, so parse it and get the RTPSession.
 					this->SetupRequest();// 普通请求，创建RTPSession会话
-
+				}
 				// This might happen if there is some syntax or other error,
 				// or if it is an OPTIONS request
 				// 服务器根据被调用的模块是否对请求做了应答来决定后面的调用
 				if (fRequest->HasResponseBeenSent())
 				{
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
-				fState = kRoutingRequest;// 转到kRoutingRequest状态
+				//fState = kRoutingRequest;// 转到kRoutingRequest状态
+				MC_CHANGE_STATE(kRoutingRequest);
 			}
 		case kRoutingRequest:
 			{
@@ -598,7 +614,8 @@ SInt64 RTSPSession::Run()
 
 				if (fRequest->HasResponseBeenSent())
 				{
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
 
@@ -608,20 +625,26 @@ SInt64 RTSPSession::Run()
 
 					// The foll. normally gets executed at the end of the authorization state 
 					// Prepare for kPreprocessingRequest state.
-					fState = kPreprocessingRequest;
-
+					//fState = kPreprocessingRequest;
+					MC_CHANGE_STATE(kPreprocessingRequest);
 					if (fRequest->GetMethod() == qtssSetupMethod)
+					{
 						// Make sure to erase the session ID stored in the request at this point.
 						// If we fail to do so, this same session would be used if another
 						// SETUP was issued on this same TCP connection.
 						fLastRTPSessionIDPtr.Len = 0;
+					}
 					else if (fLastRTPSessionIDPtr.Len == 0)
+					{
 						fLastRTPSessionIDPtr.Len = ::strlen(fLastRTPSessionIDPtr.Ptr);
-
+					}
 					break;
 				}
 				else
-					fState = kAuthenticatingRequest;
+				{
+					//fState = kAuthenticatingRequest;
+					MC_CHANGE_STATE(kAuthenticatingRequest);
+				}
 			}
 
 		case kAuthenticatingRequest:
@@ -755,10 +778,12 @@ SInt64 RTSPSession::Run()
 				fCurrentModule = 0;
 				if (fRequest->HasResponseBeenSent())
 				{
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
-				fState = kAuthorizingRequest;
+				//fState = kAuthorizingRequest;
+				MC_CHANGE_STATE(kAuthorizingRequest);
 			}
 		case kAuthorizingRequest:
 			{
@@ -797,8 +822,9 @@ SInt64 RTSPSession::Run()
 
 					theModule = QTSServerInterface::GetModule(QTSSModule::kRTSPAuthRole, fCurrentModule);
 					if (NULL == theModule)
+					{
 						continue;
-
+					}
 					if (__RTSP_AUTH_DEBUG__)
 					{
 						theModule->GetValue(qtssModName)->PrintStr("QTSSModule::CallDispatch ENTER module=", "\n");
@@ -875,7 +901,8 @@ SInt64 RTSPSession::Run()
 						{
 							fRequest->SetResponseKeepAlive(false);
 							fCurrentModule = 0;
-							fState = kPostProcessingRequest;
+							//fState = kPostProcessingRequest;
+							MC_CHANGE_STATE(kPostProcessingRequest);
 							break;
 
 						}
@@ -886,12 +913,13 @@ SInt64 RTSPSession::Run()
 				if (fRequest->HasResponseBeenSent())
 				{
 					fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
 
 				// Prepare for kPreprocessingRequest state.
-				fState = kPreprocessingRequest;
-
+				//fState = kPreprocessingRequest;
+				MC_CHANGE_STATE(kPreprocessingRequest);
 				if (fRequest->GetMethod() == qtssSetupMethod)
 					// Make sure to erase the session ID stored in the request at this point.
 					// If we fail to do so, this same session would be used if another
@@ -947,10 +975,12 @@ SInt64 RTSPSession::Run()
 				if (fRequest->HasResponseBeenSent())
 				{
 					// 进入下一状态kPostProcessingRequest
-					fState = kPostProcessingRequest;
+					//fState = kPostProcessingRequest;
+					MC_CHANGE_STATE(kPostProcessingRequest);
 					break;
 				}
-				fState = kProcessingRequest;
+				//fState = kProcessingRequest;
+				MC_CHANGE_STATE(kProcessingRequest);
 			}
 
 		case kProcessingRequest:
@@ -1011,7 +1041,8 @@ SInt64 RTSPSession::Run()
 					}
 				}
 
-				fState = kPostProcessingRequest;
+				//fState = kPostProcessingRequest;
+				MC_CHANGE_STATE(kPostProcessingRequest);
 			}
 
 		case kPostProcessingRequest:
@@ -1077,7 +1108,8 @@ SInt64 RTSPSession::Run()
 					}
 				}
 				fCurrentModule = 0;
-				fState = kSendingResponse;
+				//fState = kSendingResponse;
+				MC_CHANGE_STATE(kSendingResponse);
 			}
 
 		case kSendingResponse:
@@ -1120,7 +1152,8 @@ SInt64 RTSPSession::Run()
 					break;
 				}
 
-				fState = kCleaningUp;
+				//fState = kCleaningUp;
+				MC_CHANGE_STATE(kCleaningUp);
 			}
 
 		case kCleaningUp:
@@ -1143,7 +1176,8 @@ SInt64 RTSPSession::Run()
 				// If we've gotten here, we've flushed all the data. Cleanup,
 				// and wait for our next request!
 				this->CleanupRequest();
-				fState = kReadingRequest;
+				//fState = kReadingRequest;
+				MC_CHANGE_STATE(kReadingRequest);
 			}
 		}
 	}
