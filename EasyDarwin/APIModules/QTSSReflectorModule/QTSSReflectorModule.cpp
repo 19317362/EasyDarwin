@@ -823,7 +823,8 @@ void DoAnnounceAddRequiredSDPLines(QTSS_StandardRTSP_Params* inParams, Resizeabl
 {
 	SDPContainer checkedSDPContainer;
 	checkedSDPContainer.SetSDPBuffer(theSDPPtr);
-	if (!checkedSDPContainer.HasReqLines())
+	WPS_TRACEFL();
+	if (true )//!checkedSDPContainer.HasReqLines()) //WPS
 	{
 		if (!checkedSDPContainer.HasLineType('v'))
 		{ // add v line
@@ -890,7 +891,7 @@ void DoAnnounceAddRequiredSDPLines(QTSS_StandardRTSP_Params* inParams, Resizeabl
 			editedSDP->PutEOL();
 		}
 	}
-
+	WPS_TRACEFL();
 	editedSDP->Put(theSDPPtr);
 }
 
@@ -1104,8 +1105,10 @@ void DoDescribeAddRequiredSDPLines(QTSS_StandardRTSP_Params* inParams, Reflector
 {
 	SDPContainer checkedSDPContainer;
 	checkedSDPContainer.SetSDPBuffer(theSDPPtr);
+	WPS_TRACEFL();
 	if (!checkedSDPContainer.HasReqLines())
 	{
+		WPS_TRACEFL();
 		if (!checkedSDPContainer.HasLineType('v'))
 		{ // add v line
 			editedSDP->Put("v=0\r\n");
@@ -1147,7 +1150,7 @@ void DoDescribeAddRequiredSDPLines(QTSS_StandardRTSP_Params* inParams, Reflector
 			editedSDP->PutEOL();
 		}
 	}
-
+	WPS_TRACEFL();
 	editedSDP->Put(*theSDPPtr);
 
 }

@@ -233,8 +233,9 @@ QTSS_Error DoDescribe(QTSS_StandardRTSP_Params* inParams)
 
 	const char* sName = parList.DoFindCGIValueForParam(QUERY_STREAM_NAME);
 	if(sName == NULL) return NULL;
-
+#ifndef WPS_MOD_FTR
 	const char* sURL = parList.DoFindCGIValueForParam(QUERY_STREAM_URL);
+#endif
 	//if(sURL == NULL) return NULL;
 
 	const char* sCMD = parList.DoFindCGIValueForParam(QUERY_STREAM_CMD);
@@ -258,9 +259,11 @@ QTSS_Error DoDescribe(QTSS_StandardRTSP_Params* inParams)
 	else
 	{
 		if(bStop) return NULL;
-
+#ifndef WPS_MOD_FTR
 		if(sURL == NULL) return NULL;
-
+#else
+		char sURL[256] = {"rtsp://192.168.1.17:554/user=admin&password=&channel=1&stream=0.sdp?real_stream"};
+#endif
 		session = NEW EasyRelaySession((char*)sURL, EasyRelaySession::kRTSPTCPClientType, (char*)sName);
 
 		QTSS_Error theErr = session->RelaySessionStart();

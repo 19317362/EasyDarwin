@@ -238,13 +238,13 @@ SInt64 RTSPSession::Run()
 	// 检查超时事件和Kill事件，如果为真，则RTSPSession会话已结束
 	if ((events & Task::kTimeoutEvent) || (events & Task::kKillEvent))
 		fLiveSession = false;
-
+	
 	while (this->IsLiveSession())
 	{
 		// RTSP Session state machine. There are several well defined points in an RTSP request
 		// where this session may have to return from its run function and wait for a new event.
 		// Because of this, we need to track our current state and return to it.
-
+		WPS_TRACE("%s %d fState=%d\r\n", __FUNCTION__, __LINE__, fState);
 		switch (fState)
 		{
 		case kReadingFirstRequest:// 第一次对请求报文进行处理

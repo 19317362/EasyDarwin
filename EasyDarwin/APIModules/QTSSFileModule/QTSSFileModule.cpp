@@ -52,6 +52,7 @@
 
 #include "QTSS.h"
 
+
 class FileSession
 {
 public:
@@ -692,9 +693,10 @@ QTSS_Error DoDescribe(QTSS_StandardRTSP_Params* inParamBlock)
 		(void)QTSSModuleUtils::ReadEntireFile(thePath.GetObject(), &theSDPData);
 	}
 	OSCharArrayDeleter sdpDataDeleter(theSDPData.Ptr); // Just in case we fail we know to clean up. But we clear the deleter if we succeed.
-
+	WPS_TRACEFL();
 	if (theSDPData.Len > 0)
 	{
+		WPS_TRACEFL();
 		SDPContainer fileSDPContainer;
 		fileSDPContainer.SetSDPBuffer(&theSDPData);
 		if (!fileSDPContainer.IsSDPBufferValid())
@@ -719,6 +721,7 @@ QTSS_Error DoDescribe(QTSS_StandardRTSP_Params* inParamBlock)
 	}
 	else
 	{
+		WPS_TRACE("WPS %s %d", __FUNCTION__, __LINE__);
 		// Before generating the SDP and sending it, check to see if there is an If-Modified-Since
 		// date. If there is, and the content hasn't been modified, then just return a 304 Not Modified
 		QTSS_TimeVal* theTime = NULL;

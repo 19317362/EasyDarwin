@@ -258,7 +258,7 @@
 		<PREF NAME="PLAYLIST_CAPACITY" TYPE="UInt32" >4</PREF>
 	</MODULE>
 	<MODULE NAME="EasyRelayModule" >
-		<PREF NAME="local_ip_address" >127.0.0.1</PREF>
+		<PREF NAME="local_ip_address" >192.168.1.18</PREF>
 	</MODULE>
 	<MODULE NAME="EasyCMSModule" ></MODULE>
 	<MODULE NAME="EasyRedisModule" >

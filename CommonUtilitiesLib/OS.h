@@ -37,7 +37,8 @@
 #include "OSHeaders.h"
 #include "OSMutex.h"
 #include <string.h>
-
+#define WPS_TRACE  printf
+#define WPS_TRACEFL() WPS_TRACE("\r\nWPS %s %d\r\n", __FUNCTION__, __LINE__)
 class OS
 {
 public:

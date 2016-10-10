@@ -40,7 +40,9 @@ UInt32  OSRefTableUtils::HashString(StrPtrLen* inString)
 	Assert(inString->Ptr != NULL);
 	Assert(inString->Len > 0);
 	if (inString == NULL || inString->Len == 0 || inString->Ptr == NULL)
+	{
 		return 0;
+	}
 
 	//make sure to convert to unsigned here, as there may be binary
 	//data in this string

@@ -150,7 +150,7 @@ QTSS_Error EasyRelaySession::ProcessData(int _chid, int mediatype, char *pbuf, R
 			char sdpName[QTSS_MAX_URL_LENGTH] = { 0 };
 			sprintf(sdpName, "%s.sdp", fStreamName.Ptr);
 
-			EasyPusher_StartStream(fPusherHandle, "127.0.0.1", thePort, sdpName, "", "", (EASY_MEDIA_INFO_T*)pbuf, 1024, false);
+			EasyPusher_StartStream(fPusherHandle, "127.0.0.1", thePort, sdpName, "", "", (EASY_MEDIA_INFO_T*)pbuf, 2048, false);
 		}
 
 	}
