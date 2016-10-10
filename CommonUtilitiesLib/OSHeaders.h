@@ -26,7 +26,10 @@
 #ifndef OSHeaders_H
 #define OSHeaders_H
 #include <limits.h>
-
+//#define WPS_MOD_FTR
+//#define WPS_CMD_MOD_FTR
+#define WPS_TRACE  printf
+#define WPS_TRACEFL() WPS_TRACE("\r\nWPS %s %d\r\n", __FUNCTION__, __LINE__)
 
 
 #ifndef TRUE

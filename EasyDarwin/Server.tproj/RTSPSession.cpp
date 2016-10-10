@@ -245,7 +245,7 @@ SInt64 RTSPSession::Run()
 		// RTSP Session state machine. There are several well defined points in an RTSP request
 		// where this session may have to return from its run function and wait for a new event.
 		// Because of this, we need to track our current state and return to it.
-		WPS_TRACE("%s %d fState=%d\r\n", __FUNCTION__, __LINE__, fState);
+		WPS_TRACE("%s %d fState=%d %d\r\n", __FUNCTION__, __LINE__, fState, (fRequest!=NULL) ? fRequest->GetMethod():0 );
 		switch (fState)
 		{
 		case kReadingFirstRequest:// 第一次对请求报文进行处理
@@ -1037,7 +1037,13 @@ SInt64 RTSPSession::Run()
 					}
 					else
 					{
+#ifdef WPS_CMD_MOD_FTR
+						QTSS_RTSPStatusCode statusCode = qtssSuccessOK; //qtssClientParameterNotUnderstood;
+						fRequest->SetValue(qtssRTSPReqStatusCode, 0, &statusCode, sizeof(statusCode));
+						fRequest->SendHeader();
+#else
 						QTSSModuleUtils::SendErrorResponse(fRequest, qtssServerInternal, qtssMsgNoModuleForRequest);
+#endif
 					}
 				}
 

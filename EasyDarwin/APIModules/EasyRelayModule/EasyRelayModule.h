@@ -12,7 +12,6 @@
 #ifndef _EASYRELAYMODULE_H_
 #define _EASYRELAYMODULE_H_
 
-//#define WPS_MOD_FTR //WPS added
 
 #include "QTSS.h"
 

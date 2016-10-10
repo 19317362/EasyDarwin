@@ -198,7 +198,14 @@ QTSS_Error RTSPRequest::ParseURI(StringParser &parser)
 		StrPtrLenDel tempCStr(theAbsURL.GetAsCString());
 		StrPtrLen nonaggregate(tempCStr.FindString("/trackID="));
 		if (nonaggregate.Len > 0) // check for non-aggregate method and return error
+		{
+#ifdef WPS_CMD_MOD_FTR
+			WPS_TRACE("%s %d fMethod=%d\n", __func__, __LINE__, fMethod);
+			return 0;
+#else
 			return QTSSModuleUtils::SendErrorResponse(this, qtssClientAggregateOptionAllowed, qtssMsgBadRTSPMethod, &theAbsURL);
+#endif
+		}
 	}
 
 	// don't allow non-aggregate operations like a setup on a playing session

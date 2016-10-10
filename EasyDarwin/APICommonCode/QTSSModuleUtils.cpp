@@ -373,7 +373,7 @@ QTSS_Error  QTSSModuleUtils::SendErrorResponse( QTSS_RTSPRequestObject inRequest
                                                         StrPtrLen* inStringArg)
 {
     static Bool16 sFalse = false;
-    
+	WPS_TRACE("%s %d inStatusCode=%d inTextMessage=%d\r\n", __func__, __LINE__, inStatusCode, inTextMessage);
     //set RTSP headers necessary for this error response message
     (void)QTSS_SetValue(inRequest, qtssRTSPReqStatusCode, 0, &inStatusCode, sizeof(inStatusCode));
     (void)QTSS_SetValue(inRequest, qtssRTSPReqRespKeepAlive, 0, &sFalse, sizeof(sFalse));
